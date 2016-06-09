@@ -26,8 +26,8 @@ public class Main {
                     }
                     else {
                         User user = users.get(username);
-                        m.put("restaurants", user.beers);
-
+                        m.put("beers", user.beers);
+                        m.put("username", username);
                         return new ModelAndView(m, "home.html");
                     }
                 },
@@ -68,7 +68,7 @@ public class Main {
                 }
         );
         Spark.post(
-                "/create-restaurant",
+                "/create-beer",
                 (request, response) -> {
                     Session session = request.session();
                     String username = session.attribute("username");
@@ -77,9 +77,9 @@ public class Main {
                     }
 
                     String name = request.queryParams("name");
-                    String brewery = request.queryParams("location");
+                    String brewery = request.queryParams("brewery");
                     int rating = Integer.valueOf(request.queryParams("rating"));
-                    String comment = request.queryParams("comments");
+                    String comment = request.queryParams("comment");
                     if (name == null || brewery == null || comment == null){
                         throw new Exception("invalid form fields");
                     }
@@ -89,12 +89,50 @@ public class Main {
                         throw new Exception("User does not exist");
                     }
 
-                    Beer b = new Beer(name, brewery, rating, comment);
+                    Beer b = new Beer(name, brewery, rating, comment, user.beers.size());
                     user.beers.add(b);
 
                     response.redirect("/");
                     return "";
 
+                }
+        );
+        Spark.post(
+                "/delete-beer",
+                (request, response) -> {
+                    int id = Integer.valueOf(request.queryParams("id"));
+
+                    Session session = request.session();
+                    String username = session.attribute("username");
+                    User user = users.get(username);
+
+
+                    user.beers.remove(id);
+                    int index = 0; //reset ids
+                    for (Beer b : user.beers){
+                        b.id = index;
+                        index++;
+                    }
+                    response.redirect("/");
+                    return "";
+                }
+        );
+        Spark.post(
+                "/edit",
+                (request, response) -> {
+                    Session session = request.session();
+                    String username = session.attribute("username");
+
+                    if (username == null) {
+                        throw new Exception("not logged in");
+                    }
+                    int id = Integer.valueOf(request.queryParams("id"));
+                    User user = users.get(username);
+                    String beer = request.queryParams("edit-message");
+                    Beer b = user.beers.get(id - 1);//re
+
+                    response.redirect("/");
+                    return "";
                 }
         );
 

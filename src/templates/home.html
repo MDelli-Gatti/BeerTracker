@@ -1,6 +1,6 @@
 <html>
 <body>
-{{name}}
+{{username}}
 <form action="/logout" method="post">
     <button type="submit">Logout</button>
 </form>
@@ -19,14 +19,20 @@
     <button type="submit">Submit</button>
 </form>
 
-<form action="/delete-beer" method="post">
-    <input type="number" name="id" placeholder="#"/>
-    <button type="submit">Delete Beer</button>
-</form>
 
 <ol>
     {{#beers}}
-    <li><b>{{name}}</b> - {{brewery}} - {{rating}} (rating) - {{comment}}</li>
+    <li><b>{{name}}</b> - {{brewery}} - {{rating}}/5 - {{comment}}
+        <form action="/delete-beer" method="post" style="display: inline-block">
+            <input type="hidden" name="id" value="{{id}}"/>
+            <button type="submit">Delete</button>
+            </form>
+        <form action="/edit" method="post" style="display: inline-block">
+            <input type="hidden" name="id" value="{{id}}"/>
+            <button type="submit">Edit</button>
+        </form>
+
+    </li>
     {{/beers}}
 </ol>
 </body>

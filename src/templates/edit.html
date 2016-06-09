@@ -1,0 +1,18 @@
+<html>
+<body>
+{{name}}, {{brewery}}, {{rating}}, {{comment}}<br>
+<form action="/edit" method="post">
+    <input type="text" name="name" placeholder="{{name}}"/>
+    <input type="text" name="location" placeholder="{{location}}"/>
+    <select name="rating">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
+    <input type="text" name="comments" placeholder="{{comment}}"/>
+    <button type="submit">Submit</button>
+</form>
+</body>
+</html>
