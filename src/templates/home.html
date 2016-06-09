@@ -1,0 +1,33 @@
+<html>
+<body>
+{{name}}
+<form action="/logout" method="post">
+    <button type="submit">Logout</button>
+</form>
+
+<form action="/create-beer" method="post">
+    <input type="text" name="name" placeholder="Name"/>
+    <input type="text" name="brewery" placeholder="Brewery"/>
+    <select name="rating">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
+    <input type="text" name="comment" placeholder="Comments"/>
+    <button type="submit">Submit</button>
+</form>
+
+<form action="/delete-beer" method="post">
+    <input type="number" name="id" placeholder="#"/>
+    <button type="submit">Delete Beer</button>
+</form>
+
+<ol>
+    {{#beers}}
+    <li><b>{{name}}</b> - {{brewery}} - {{rating}} (rating) - {{comment}}</li>
+    {{/beers}}
+</ol>
+</body>
+</html>
