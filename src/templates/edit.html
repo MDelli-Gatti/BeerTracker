@@ -1,9 +1,11 @@
 <html>
 <body>
+{{#beer}}
 {{name}}, {{brewery}}, {{rating}}, {{comment}}<br>
-<form action="/edit" method="post">
-    <input type="text" name="name" placeholder="{{name}}"/>
-    <input type="text" name="location" placeholder="{{location}}"/>
+{{/beer}}
+<form action="/edit-beer" method="post">
+    <input type="text" name="name" placeholder="Name"/>
+    <input type="text" name="location" placeholder="Location"/>
     <select name="rating">
         <option value="1">1</option>
         <option value="2">2</option>
@@ -11,7 +13,7 @@
         <option value="4">4</option>
         <option value="5">5</option>
     </select>
-    <input type="text" name="comments" placeholder="{{comment}}"/>
+    <input type="text" name="comments" placeholder="Comment"/>
     <button type="submit">Submit</button>
 </form>
 </body>

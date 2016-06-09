@@ -33,6 +33,20 @@ public class Main {
                 },
                 new MustacheTemplateEngine()
         );
+        Spark.get(
+                "/edit",
+                (request, response) -> {
+                    Session session = request.session();
+                    String username = session.attribute("username");
+                    HashMap m = new HashMap();
+                    User user = users.get(username);
+                    int idNum = Integer.valueOf(request.queryParams("id"));
+                    Beer br = user.beers.get(idNum);
+                    m.put("beer", br);
+                    return new ModelAndView(m,"edit.html");
+                },
+                new MustacheTemplateEngine()
+        );
         Spark.post(
                 "/login",
                 (request, response) -> {
@@ -118,18 +132,22 @@ public class Main {
                 }
         );
         Spark.post(
-                "/edit",
+                "/edit-beer",
                 (request, response) -> {
                     Session session = request.session();
                     String username = session.attribute("username");
-
                     if (username == null) {
                         throw new Exception("not logged in");
                     }
-                    int id = Integer.valueOf(request.queryParams("id"));
                     User user = users.get(username);
-                    String beer = request.queryParams("edit-message");
-                    Beer b = user.beers.get(id - 1);//re
+                    int id = Integer.valueOf(request.queryParams("id"));
+
+                    Beer b = user.beers.get(id);
+                    b.name = request.queryParams("name");
+                    b.brewery = request.queryParams("brewery");
+                    b.rating = Integer.valueOf(request.queryParams("rating"));
+                    b.comment = request.queryParams("comment");
+                    user.beers.add(b);
 
                     response.redirect("/");
                     return "";
