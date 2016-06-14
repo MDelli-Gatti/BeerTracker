@@ -74,7 +74,7 @@ public class Main {
     }
 
     public static Beer selectBeer(Connection conn, int id) throws SQLException {
-        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM beers INNER JOIN users ON beers.user_id = users.id WHERE users.id = ?");
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM beers INNER JOIN users ON beers.user_id = users.id WHERE beers.id = ?");
         stmt.setInt(1, id);
         ResultSet results = stmt.executeQuery();
         while (results.next()){
@@ -207,6 +207,9 @@ public class Main {
 
                     Session session = request.session();
                     String username = session.attribute("username");
+                    if (username == null) {
+                        throw new Exception("not logged in");
+                    }
 
                     deleteBeer(conn, id);
 
@@ -224,14 +227,12 @@ public class Main {
                     }
                     int id = Integer.valueOf(request.queryParams("id"));
 
-                    Beer b = selectBeer(conn, id);
+                    String name = request.queryParams("name");
+                    String brewery = request.queryParams("brewery");
+                    int rating = Integer.valueOf(request.queryParams("rating"));
+                    String comment = request.queryParams("comment");
 
-                    b.name = request.queryParams("name");
-                    b.brewery = request.queryParams("brewery");
-                    b.rating = Integer.valueOf(request.queryParams("rating"));
-                    b.comment = request.queryParams("comment");
-
-                    editBeer(conn, b.id, b.name, b.brewery, b.rating, b.comment);
+                    editBeer(conn, id, name, brewery, rating, comment);
 
                     response.redirect("/");
                     return "";
