@@ -88,7 +88,6 @@ public class Main {
         return null;
     }
 
-    //static HashMap<String, User> users = new HashMap<>();
 
     public static void main(String[] args) throws SQLException {
         Server.createWebServer().start();
@@ -113,7 +112,7 @@ public class Main {
                     else {
                         User user = selectUser(conn, username);
                         m.put("beers", selectBeers(conn, user.id));
-
+                        m.put("username", username);
                         return new ModelAndView(m, "home.html");
                     }
                 },
@@ -138,18 +137,16 @@ public class Main {
                 "/login",
                 (request, response) -> {
                     String name = request.queryParams("username");
-                    String pass = request.queryParams("password");
-                    if (name == null || pass == null){
+                    String password = request.queryParams("password");
+                    if (name == null || password == null){
                         throw new Exception("name or pass not set");
                     }
 
                     User user = selectUser(conn, name);
                     if (user == null){
-                        //user = new User(name, pass);
-                        //users.put(name, user);
-                        insertUser(conn, name, pass);
+                        insertUser(conn, name, password);
                     }
-                    else if (!pass.equals(user.password)){
+                    else if (!password.equals(user.password)){
                         throw new Exception("wrong password");
                     }
 
@@ -192,9 +189,6 @@ public class Main {
                     }
 
                     insertBeer(conn, name, brewery, rating, comment, user.id);
-
-                    //Beer b = new Beer(user.beers.size(), name, brewery, rating, comment);
-                    //user.beers.add(b);
 
                     response.redirect("/");
                     return "";

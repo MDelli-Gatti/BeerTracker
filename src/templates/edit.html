@@ -1,19 +1,20 @@
 <html>
+Edit your beer below.<br>
 <body>
 {{#beer}}
 {{name}}, {{brewery}}, {{rating}}, {{comment}}<br>
 <form action="/edit-beer" method="post">
     <input type="hidden" name="id" value="{{id}}"/>
-    <input type="text" name="name" placeholder="Name"/>
-    <input type="text" name="brewery" placeholder="Brewery"/>
-    <select name="rating">
+    <input type="text" name="name" placeholder="{{name}}"/>
+    <input type="text" name="brewery" placeholder="{{brewery}}"/>
+    <select name="rating" >
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
         <option value="4">4</option>
         <option value="5">5</option>
     </select>
-    <input type="text" name="comment" placeholder="Comment"/>
+    <input type="text" name="comment" placeholder="{{comment}}"/>
     <button type="submit">Submit</button>
 </form>
 {{/beer}}
